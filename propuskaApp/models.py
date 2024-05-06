@@ -27,13 +27,13 @@ class Pass(models.Model):
     date_end = models.DateField(verbose_name='Дата окончания')
     issued_by = models.ForeignKey(Worker,on_delete=models.CASCADE)
 
-class WorkerPass(Pass):
-    worker = models.ForeignKey(Worker,on_delete=models.CASCADE)
-
+# class WorkerPass(Pass):
+#     worker = models.ForeignKey(Worker,on_delete=models.CASCADE)
+#
 
 class TempPass(Pass):
-    visitor = models.ForeignKey(Visitor,on_delete=models.CASCADE)
-    escort = models.ForeignKey(Worker,on_delete=models.CASCADE)
+    visitor = models.ForeignKey(Visitor, on_delete=models.CASCADE)
+    escort = models.ForeignKey(Worker, on_delete=models.CASCADE)
 
 class Location(models.Model):
     location_name = models.CharField(max_length=100, verbose_name='Точка прохода')
@@ -44,8 +44,8 @@ class Permission(models.Model):
 
 class Passing(models.Model):
     _time = models.DateTimeField(verbose_name='')
-    location = models.ForeignKey(Location,on_delete=models.CASCADE)
-    _pass = models.ForeignKey(Pass,on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    _pass = models.ForeignKey(Pass, on_delete=models.CASCADE)
 
 # class VisitorPassing(models.Model):
 #
