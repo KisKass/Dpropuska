@@ -20,6 +20,14 @@ from django.urls import path
 from propuskaApp import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('',views.Hello)
+    path('admin/', admin.site.urls,),
+    path('', views.Hello, name='home'),
+    path('temp_pass', views.temp_pass, name='temp'),
+    path('worker_pass', views.worker_pass, name='workers'),
+
+    path('login', views.login),
+    path('logout', views.logout),
+    path('load_data_to_temp_pass', views.load_data_to_temp_pass, name='load_data_to_temp_pass'),
+    path('load_data_to_workers', views.load_data_to_workers, name='load_data_to_workers'),
+
 ]
