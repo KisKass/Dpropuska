@@ -121,6 +121,6 @@ def login(request):
     return render(request, 'login.html')
 
 
-def logout(request):
+def logout_user(request):
     logout(request)
     return redirect('home')

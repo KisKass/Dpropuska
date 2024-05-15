@@ -27,8 +27,8 @@ urlpatterns = [
     path('create', views.create_pass, name='new_pass'),
     path('view/<int:pk>/', views.pass_view, name='new_pass'),
 
-    path('login', views.login),
-    path('logout', views.logout),
+    path('login', views.login, name='login'),
+    path('logout', views.logout_user, name='logout'),
     path('load_data_to_temp_pass', views.load_data_to_temp_pass, name='load_data_to_temp_pass'),
     path('load_data_to_workers', views.load_data_to_workers, name='load_data_to_workers'),
     path('load_data_to_pass_view', views.load_data_to_pass_view, name='load_data_to_pass_view'),
