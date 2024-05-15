@@ -1,0 +1,45 @@
+{% extends 'home.html' %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">Новый пропуск</div>
+        <div class="card-body">
+             <form action="" method="post">
+        {% csrf_token %}
+        <div class="d-flex">   <div class="form-floating mb-3 me-3 col-6 ">
+            <input type="date" class="form-control" name="date_start" id="floatingInputGrid" placeholder=" " value="">
+            <label for="floatingInputGrid">Дата начала</label>
+        </div>
+        <div class="form-floating mb-3 pe-3 col-6 ">
+            <input type="date" class="form-control" name="date_end" id="floatingInputGrid" placeholder=" " value="">
+            <label for="floatingInputGrid">Дата окончания</label>
+        </div></div>
+
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="FIO" id="floatingInputGrid" placeholder=" " value="">
+            <label for="floatingInputGrid">ФИО</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="document" id="floatingInputGrid" placeholder=" " value="">
+            <label for="floatingInputGrid">Номер паспорта</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" name="organization" class="form-control" id="floatingInputGrid" placeholder=" " value="">
+            <label for="floatingInputGrid">Организация посетителя</label>
+        </div>
+        <div class="form-floating mb-3">
+            <select class="form-select" name="escort" id="floatingSelect" aria-label="Floating label select example">
+                <option selected>Выберите сопровождающего</option>
+
+                {% for obj in escort_options %}
+                        <option value="{{ obj.id }}">{{ obj.FIO }} </option>
+                {% endfor %}
+            </select>
+            <label for="floatingSelect">Cопровождающий</label>
+        </div>
+        <input type="submit" value="Создать" class="btn btn-success">
+    </form>
+
+        </div>
+    </div>
+
+{% endblock %}

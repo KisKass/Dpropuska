@@ -1,0 +1,43 @@
+{% extends 'home.html' %}
+{% block content %}
+    <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+        <tr>
+            <th> Номер пропуска</th>
+            <th scope="col">Время прохождения</th>
+            <th scope="col">Место</th>
+
+        </tr>
+        </thead>
+    </table>
+    <script>
+        var table = $('#example').DataTable({
+            responsive: true,
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+            layout: {
+                bottom1: 'searchBuilder',
+                topStart: 'buttons',
+            },
+            language: {
+                url: '//cdn.datatables.net/plug-ins/2.0.6/i18n/ru.json',
+            },
+            ajax: {
+                url: "{% url 'load_data_to_pass_view' %}?pk=pass_id",
+                dataSrc: "",
+            },
+            columns: [
+                {data: "_pass_id",},
+                {data: "_time"},
+
+                {data: "location"},
+
+
+
+            ],
+            select: true,
+        });
+        table.buttons().container()
+            .appendTo($('.col-sm-6:eq(0)', table.table().container()));
+    </script>
+
+{% endblock %}

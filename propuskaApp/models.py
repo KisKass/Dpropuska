@@ -1,18 +1,17 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
 # Create your models here.
 
 class Person(models.Model):
-    F = models.CharField(max_length=100, verbose_name='Фамилия')
-    I = models.CharField(max_length=100, verbose_name='Имя')
-    O = models.CharField(max_length=100, verbose_name='Отчество')
-    @property
-    def full_name(self):
-        "Returns the person's full name."
-        return f"{self.F} {self.I} {self.O}"
+    # F = models.CharField(max_length=100, verbose_name='Фамилия')
+    # I = models.CharField(max_length=100, verbose_name='Имя')
+    # O = models.CharField(max_length=100, verbose_name='Отчество')
+    FIO = models.CharField(max_length=200, verbose_name='ФИО')
+
     def __str__(self):
-        return f"{self.full_name}"
+        return f"{self.FIO}"
 
 class Position(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название должности')
@@ -38,7 +37,7 @@ class Worker(Person):
 class Pass(models.Model):
     date_start = models.DateField(verbose_name='Дата выдачи')
     date_end = models.DateField(verbose_name='Дата окончания')
-    issued_by = models.ForeignKey(Worker, on_delete=models.CASCADE)
+    issued_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class WorkerPass(Pass):

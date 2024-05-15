@@ -5,17 +5,23 @@
         <tr>
             <th> ID</th>
             <th scope="col">ФИО</th>
-            <th scope="col">ФИО</th>
-            <th scope="col">ФИО</th>
+
             <th scope="col">Должность</th>
             <th scope="col">Отдел</th>
             <th scope="col">Дата выдачи</th>
             <th scope="col">Дата окончания</th>
 
+
         </tr>
         </thead>
     </table>
     <script>
+        function addDays(date, days) {
+            var result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
+
         var table = $('#example').DataTable({
             responsive: true,
             buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
@@ -33,19 +39,27 @@
             columns: [
                 {
                     data: "pk", render: function (data, type, full, meta) {
-                        return '<a href="view_request/' + data + '" target=_blank>' + data + '</a>'
+                        return '<a href="view/' + data + '" target=_blank>' + data + '</a>'
                     }
                 },
-                {data: "worker__F"},
-                {data: "worker__I"},
-                {data: "worker__O"},
+                {data: "worker__FIO"},
                 {data: "worker__position__name"},
                 {data: "worker__department__name"},
                 {data: "date_start"},
                 {data: "date_end"},
-
-
             ],
+            rowCallback: function (row, data) {
+                var today = new Date();
+                console.log(today)
+                var data_date = new Date(data.date_end)
+                today = addDays(today,7)
+
+                console.log(today)
+                if (data_date < today) {
+                    console.log("--in--")
+                    $(row).addClass("table-danger");
+                }
+            },
             select: true,
         });
         table.buttons().container()

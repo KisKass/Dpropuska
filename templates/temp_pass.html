@@ -1,62 +1,67 @@
 {% extends 'home.html' %}
 {% block content %}
-      <table id="example" class="table table-striped" style="width:100%">
-                    <thead>
-                    <tr>
-                        <th> ID</th>
-                        <th scope="col" >Дата выдачи</th>
-                        <th scope="col" >Дата окончания</th>
-                        <th scope="col" >ФИО</th>
-                        <th scope="col" >ФИО</th>
-                        <th scope="col" >ФИО</th>
-                        <th scope="col" >Сопровождающий</th>
-                        <th scope="col" >Сопровождающий</th>
-                        <th scope="col" >Сопровождающий</th>
-                        <th scope="col" >Кем выдан</th>
-                        <th scope="col" >Кем выдан</th>
+    <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+        <tr>
+            <th> ID</th>
+            <th scope="col">Дата выдачи</th>
+            <th scope="col">Дата окончания</th>
+            <th scope="col">ФИО</th>
 
-                    </tr>
-                    </thead>
+            <th scope="col">Сопровождающий</th>
+
+            <th scope="col">Кем выдан</th>
+            <th scope="col">Кем выдан</th>
+
+        </tr>
+        </thead>
 
 
-                </table>
-                <script>
-                    var table = $('#example').DataTable({
-                        responsive: true,
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-                        layout: {
-                            bottom1: 'searchBuilder',
-                            topStart: 'buttons',
-                        },
-                        language: {
-                            url: '//cdn.datatables.net/plug-ins/2.0.6/i18n/ru.json',
-                        },
-                        ajax: {
-                            url: "{% url 'load_data_to_temp_pass' %}",
-                            dataSrc: "",
-                        },
-                        columns: [
-                            {
-                                data: "pk", render: function (data, type, full, meta) {
-                                    return '<a href="view_request/' + data + '" target=_blank>' + data + '</a>'
-                                }
-                            },
-                            {data: "date_start"},
-                            {data: "date_end"},
-                            {data: "visitor__F"},
-                            {data: "visitor__I"},
-                            {data: "visitor__O"},
-                            {data: "escort__F"},
-                            {data: "escort__I"},
-                            {data: "escort__O"},
-                            {data: "issued_by__F"},
-                            {data: "issued_by__position__name"},
+    </table>
+    <script>
+        var table = $('#example').DataTable({
+            responsive: true,
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+            layout: {
+                bottom1: 'searchBuilder',
+                topStart: 'buttons',
+            },
+            language: {
+                url: '//cdn.datatables.net/plug-ins/2.0.6/i18n/ru.json',
+            },
+            ajax: {
+                url: "{% url 'load_data_to_temp_pass' %}",
+                dataSrc: "",
+            },
+            columns: [
+                {
+                    data: "pk", render: function (data, type, full, meta) {
+                        return '<a href="view/' + data + '" target=_blank>' + data + '</a>'
+                    }
+                },
+                {data: "date_start"},
+                {data: "date_end"},
+                {data: "visitor__FIO"},
 
-                        ],
-                        select: true,
-                    });
-                    table.buttons().container()
-                        .appendTo($('.col-sm-6:eq(0)', table.table().container()));
-                </script>
+                {data: "escort__FIO"},
+
+                {data: "issued_by__first_name"},
+                {data: "issued_by__last_name"},
+
+            ],
+            rowCallback: function (row, data) {
+                var today = new Date();
+                var data_date = new Date(data.date_end)
+
+                if (data_date < today) {
+                    console.log("--in--")
+                    $(row).addClass( "table-warning") ;
+                }
+            },
+            select: true,
+        });
+        table.buttons().container()
+            .appendTo($('.col-sm-6:eq(0)', table.table().container()));
+    </script>
 
 {% endblock %}
