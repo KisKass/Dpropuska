@@ -10,5 +10,5 @@ admin.site.register(Worker)
 admin.site.register(WorkerPass)
 admin.site.register(TempPass)
 admin.site.register(Location)
-admin.site.register(Permission)
+
 admin.site.register(Passing)

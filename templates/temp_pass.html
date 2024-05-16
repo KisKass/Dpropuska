@@ -1,6 +1,9 @@
 {% extends 'home.html' %}
 {% block content %}
-    <table id="example" class="table table-striped" style="width:100%">
+     <div class="card">
+    <div class="card-header">Временные пропуска</div>
+    <div class="card-body">
+         <table id="example" class="table table-striped" style="width:100%">
         <thead>
         <tr>
             <th> ID</th>
@@ -11,13 +14,16 @@
             <th scope="col">Сопровождающий</th>
 
             <th scope="col">Кем выдан</th>
-            <th scope="col">Кем выдан</th>
+
 
         </tr>
         </thead>
 
 
     </table>
+    </div>
+    </div>
+
     <script>
         var table = $('#example').DataTable({
             responsive: true,
@@ -33,6 +39,7 @@
                 url: "{% url 'load_data_to_temp_pass' %}",
                 dataSrc: "",
             },
+              order: [[0, 'desc']],
             columns: [
                 {
                     data: "pk", render: function (data, type, full, meta) {
@@ -46,7 +53,7 @@
                 {data: "escort__FIO"},
 
                 {data: "issued_by__first_name"},
-                {data: "issued_by__last_name"},
+
 
             ],
             rowCallback: function (row, data) {

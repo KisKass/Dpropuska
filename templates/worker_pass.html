@@ -1,6 +1,9 @@
 {% extends 'home.html' %}
 {% block content %}
-    <table id="example" class="table table-striped" style="width:100%">
+     <div class="card">
+    <div class="card-header">Пропуска сотрудников</div>
+    <div class="card-body">
+         <table id="example" class="table table-striped" style="width:100%">
         <thead>
         <tr>
             <th> ID</th>
@@ -15,6 +18,9 @@
         </tr>
         </thead>
     </table>
+    </div>
+    </div>
+
     <script>
         function addDays(date, days) {
             var result = new Date(date);
@@ -36,6 +42,7 @@
                 url: "{% url 'load_data_to_workers' %}",
                 dataSrc: "",
             },
+              order: [[0, 'desc']],
             columns: [
                 {
                     data: "pk", render: function (data, type, full, meta) {

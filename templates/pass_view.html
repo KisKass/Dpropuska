@@ -1,22 +1,51 @@
 {% extends 'home.html' %}
 {% block content %}
     {#{ req_pass }#}
-    <b>Номер пропуска</b>: {{ req_pass.0.id }} <br>
-   <b>ФИО посетителя</b>: {{ req_pass.0.visitor__FIO }} <br>
-   <b>Номер пасспорта</b>: {{ req_pass.0.visitor__document }} <br>
-   <b>Организация посетителя</b>: {{ req_pass.0.visitor__organization }} <br>
-   <b>Сопровождающий</b>: {{ req_pass.0.escort__FIO }} <br>
-   <b>Отдел</b>: {{ req_pass.0.escort__department__name }} <br>
-    <table id="example" class="table table-striped" style="width:100%">
-        <thead>
-        <tr>
+    <div class="card">
+        <div class="card-header">Пропуск №{{ req_pass.0.id }}</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-2" style="
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+">
+                    <ul class="list-group">
+                        <li class="list-group-item"><b>ФИО посетителя</b>: {{ req_pass.0.visitor__FIO }}
+                        </li>
+                        <li class="list-group-item"><b>Номер пасспорта</b>: {{ req_pass.0.visitor__document }}
+                        </li>
+                        <li class="list-group-item"><b>Организация
+                            посетителя</b>: {{ req_pass.0.visitor__organization }}</li>
+                        <li class="list-group-item"><b>Сопровождающий</b>: {{ req_pass.0.escort__FIO }}
+                        </li>
+                        <li class="list-group-item"><b>Отдел</b>: {{ req_pass.0.escort__department__name }}
+                        </li>
+                    </ul>
+                    <button class="btn btn-primary">Печать пропуска</button>
+                </div>
+                <div class="col">
 
-            <th scope="col">Время прохождения</th>
-            <th scope="col">Место</th>
+                <table id="example" class="table table-striped" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th scope="col">Время прохождения</th>
+                        <th scope="col">Место</th>
+                    </tr>
+                    </thead>
+                </table>
 
-        </tr>
-        </thead>
-    </table>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
+
     <script>
         var table = $('#example').DataTable({
             responsive: true,
@@ -37,7 +66,6 @@
                 {data: "_time"},
 
                 {data: "location__location_name"},
-
 
 
             ],

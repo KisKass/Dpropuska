@@ -25,7 +25,8 @@ urlpatterns = [
     path('temp_pass', views.temp_pass, name='temp'),
     path('worker_pass', views.worker_pass, name='workers'),
     path('create', views.create_pass, name='new_pass'),
-    path('view/<int:pk>/', views.pass_view, name='new_pass'),
+    path('view/<int:pk>/', views.pass_view, name='view'),
+    path('stats', views.stats_view, name='stats'),
 
     path('login', views.login, name='login'),
     path('logout', views.logout_user, name='logout'),

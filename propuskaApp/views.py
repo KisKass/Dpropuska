@@ -3,10 +3,11 @@ import json
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from propuskaApp.models import TempPass, Worker, WorkerPass, Visitor, Passing
+from propuskaApp.models import TempPass, Worker, WorkerPass, Visitor, Passing, Department
 from datetime import date, datetime
 
 
@@ -23,12 +24,12 @@ def Hello(request):
 
 @login_required
 def temp_pass(request):
-    return render(request, "temp_pass.html", {"active_page": 1})
+    return render(request, "temp_pass.html", {"active_page": 1,'title':'Временные пропуска'})
 
 
 @login_required
 def worker_pass(request):
-    return render(request, "worker_pass.html", {"active_page": 2})
+    return render(request, "worker_pass.html", {"active_page": 2,'title':'Пропуска сотрудников'})
 
 
 @login_required
@@ -45,7 +46,7 @@ def create_pass(request):
                             escort=Worker.objects.get(pk=request.POST['escort']))
         new_pass.save()
         redirect('temp')
-    return render(request, 'create_pass.html', {"active_page": 3, "escort_options": escort_list})
+    return render(request, 'create_pass.html', {"active_page": 3, "escort_options": escort_list,'title':'Новый пропуск'})
 
 
 def json_serial(obj):
@@ -69,7 +70,7 @@ def load_data_to_temp_pass(request):
                                            'escort__FIO',
 
                                            'issued_by__first_name',
-                                           'issued_by__last_name',
+
                                            )
     serialized_q = json.dumps(list(object_list2), default=json_serial)
 
@@ -108,8 +109,24 @@ def load_data_to_pass_view(request):
 def pass_view(request, pk):
     req_pass = TempPass.objects.filter(pk=pk).values('visitor__FIO', 'visitor__document', 'visitor__organization',
                                                      'escort__FIO', 'escort__department__name', 'id')
-    return render(request, 'pass_view.html', {'pass_id': pk, 'req_pass': req_pass,"active_page": 1})
+    return render(request, 'pass_view.html', {'pass_id': pk, 'req_pass': req_pass,"active_page": 1,'title':f"Просмотр пропуска №{pk}"})
 
+def stats_view(request):
+    department_visits = Department.objects.annotate(
+        visit_count=Count('worker__temppass')
+    ).values('name', 'visit_count')
+
+    # Prepare data for the chart
+    department_names = [department['name'] for department in department_visits]
+    visit_counts = [department['visit_count'] for department in department_visits]
+
+    context = {
+        'department_names': department_names,
+        'visit_counts': visit_counts,
+        'active_page':4,'title':'Статистика посещения'
+    }
+
+    return render(request,'stats.html',context)
 
 def login(request):
     if request.POST:
@@ -120,7 +137,7 @@ def login(request):
             return redirect('home')
         else:
             return redirect('login')
-    return render(request, 'login.html')
+    return render(request, 'login.html',{'title':'Авторизация'})
 
 
 def logout_user(request):

@@ -1,50 +1,89 @@
 {% extends 'home.html' %}
 {% block content %}
     {#{ req_pass }#}
-    <b>Номер пропуска</b>: {{ req_pass.0.id }} <br>
-   <b>ФИО посетителя</b>: {{ req_pass.0.visitor__FIO }} <br>
-   <b>Номер пасспорта</b>: {{ req_pass.0.visitor__document }} <br>
-   <b>Организация посетителя</b>: {{ req_pass.0.visitor__organization }} <br>
-   <b>Сопровождающий</b>: {{ req_pass.0.escort__FIO }} <br>
-   <b>Отдел</b>: {{ req_pass.0.escort__department__name }} <br>
-    <table id="example" class="table table-striped" style="width:100%">
-        <thead>
-        <tr>
+    <script src="
+https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js
+"></script>
+    <div class="card">
+    <div class="card-header">
+        <h1>Посещаемые отделы</h1>
+    </div>
+    <div class="card-body">
+        <canvas id="departmentVisitsChart" width="1843" height="800" ></canvas>
+    </div>
+    </div>
 
-            <th scope="col">Время прохождения</th>
-            <th scope="col">Место</th>
 
-        </tr>
-        </thead>
-    </table>
     <script>
-        var table = $('#example').DataTable({
-            responsive: true,
-            buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-            layout: {
-                bottom1: 'searchBuilder',
-                topStart: 'buttons',
-            },
-            language: {
-                url: '//cdn.datatables.net/plug-ins/2.0.6/i18n/ru.json',
-            },
-            ajax: {
-                url: "{% url 'load_data_to_pass_view' %}?pk=pass_id",
-                dataSrc: "",
-            },
-            columns: [
-
-                {data: "_time"},
-
-                {data: "location__location_name"},
-
-
-
-            ],
-            select: true,
+        document.addEventListener("DOMContentLoaded", function() {
+            var ctx = document.getElementById('departmentVisitsChart').getContext('2d');
+            var departmentVisitsChart = new Chart(ctx, {
+                type: 'bar', // You can change this to 'line', 'pie', etc.
+                data: {
+                    labels: {{ department_names|safe }},
+                    datasets: [{
+                        label: 'Посещения',
+                        data: {{ visit_counts|safe }},
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
         });
-        table.buttons().container()
-            .appendTo($('.col-sm-6:eq(0)', table.table().container()));
     </script>
+</table>
+{#    <b>Номер пропуска</b>: {{ req_pass.0.id }} <br>#}
+{#   <b>ФИО посетителя</b>: {{ req_pass.0.visitor__FIO }} <br>#}
+{#   <b>Номер пасспорта</b>: {{ req_pass.0.visitor__document }} <br>#}
+{#   <b>Организация посетителя</b>: {{ req_pass.0.visitor__organization }} <br>#}
+{#   <b>Сопровождающий</b>: {{ req_pass.0.escort__FIO }} <br>#}
+{#   <b>Отдел</b>: {{ req_pass.0.escort__department__name }} <br>#}
+{#    <table id="example" class="table table-striped" style="width:100%">#}
+{#        <thead>#}
+{#        <tr>#}
+{##}
+{#            <th scope="col">Время прохождения</th>#}
+{#            <th scope="col">Место</th>#}
+{##}
+{#        </tr>#}
+{#        </thead>#}
+{#    </table>#}
+{#    <script>#}
+{#        var table = $('#example').DataTable({#}
+{#            responsive: true,#}
+{#            buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],#}
+{#            layout: {#}
+{#                bottom1: 'searchBuilder',#}
+{#                topStart: 'buttons',#}
+{#            },#}
+{#            language: {#}
+{#                url: '//cdn.datatables.net/plug-ins/2.0.6/i18n/ru.json',#}
+{#            },#}
+{#            ajax: {#}
+{#                url: "{% url 'load_data_to_pass_view' %}?pk=pass_id",#}
+{#                dataSrc: "",#}
+{#            },#}
+{#            columns: [#}
+{##}
+{#                {data: "_time"},#}
+{##}
+{#                {data: "location__location_name"},#}
+{##}
+{##}
+{##}
+{#            ],#}
+{#            select: true,#}
+{#        });#}
+{#        table.buttons().container()#}
+{#            .appendTo($('.col-sm-6:eq(0)', table.table().container()));#}
+{#    </script>#}
 
 {% endblock %}
