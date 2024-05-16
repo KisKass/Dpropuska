@@ -2,6 +2,7 @@ import json
 
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -95,9 +96,9 @@ def load_data_to_workers(request):
 @login_required
 def load_data_to_pass_view(request):
     # object_list1 = Request.objects.all()
-    object_list2 = Passing.objects.values('_pass_id',
+    object_list2 = Passing.objects.values(
                                           '_time',
-                                          'location',
+                                          'location__location_name',
                                           )
     serialized_q = json.dumps(list(object_list2), default=json_serial)
 
@@ -105,8 +106,9 @@ def load_data_to_pass_view(request):
 
 
 def pass_view(request, pk):
-    req_pass = TempPass.objects.get(pk=pk)
-    return render(request, 'pass_view.html', {'pass_id': pk})
+    req_pass = TempPass.objects.filter(pk=pk).values('visitor__FIO', 'visitor__document', 'visitor__organization',
+                                                     'escort__FIO', 'escort__department__name', 'id')
+    return render(request, 'pass_view.html', {'pass_id': pk, 'req_pass': req_pass,"active_page": 1})
 
 
 def login(request):
